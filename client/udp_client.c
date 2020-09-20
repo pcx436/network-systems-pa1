@@ -11,9 +11,6 @@
 #include <netdb.h>
 #include "../utilities.h"
 
-#define BUFSIZE 1024
-
-
 /*
  * error - wrapper for perror
  */
