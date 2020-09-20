@@ -138,7 +138,11 @@ int main(int argc, char **argv) {
 				sprintf(buf, "File \"%s\" failed to transfer, %s", parameter, strerror(errno));
 			}
 		} else if (strcmp("put", command) == 0 && parameter != NULL) {
-			receiveFile(sockfd, &clientaddr, &clientlen, parameter);
+			if (receiveFile(sockfd, &clientaddr, &clientlen, parameter) >= 0) {
+				sprintf(buf, "File \"%s\" received successfully!", parameter);
+			} else {
+				sprintf(buf, "File \"%s\" could not be received, %s", parameter, strerror(errno));
+			}
 		} else if (strcmp("delete", command) == 0 && parameter != NULL) {
 			if (remove(parameter) == 0) {
 				sprintf(buf, "File \"%s\" deleted successfully!", parameter);
