@@ -21,7 +21,7 @@ void error(char *msg) {
 
 int main(int argc, char **argv) {
     int sockfd, portno, n;
-    int serverlen, getDone;
+    int serverlen;
     struct sockaddr_in serveraddr;
     struct hostent *server;
     char *hostname;
