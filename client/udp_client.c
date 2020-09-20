@@ -13,6 +13,12 @@
 #include <netdb.h>
 #include "../utilities.h"
 
+/**
+ * Called to receive the response to the "ls" command.
+ * @param 	sockfd 		The socket file descriptor.
+ * @param 	serveraddr 	The server's address information.
+ * @param 	serverlen 	The lenght of the server address.
+ */
 void ls(int sockfd, struct sockaddr_in *serveraddr, int *serverlen) {
 	char recv[BUFSIZE];
 	int bytesReceived;
