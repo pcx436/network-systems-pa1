@@ -22,7 +22,8 @@ void ls(char results[]) {
 	bzero(results, BUFSIZE);
 	dirptr = opendir("./");
 
-	if (dirptr != NULL)
+	if (dirptr != NULL) {
+		// while there are files in the directory, put them in results buffer
 		while ((ent = readdir(dirptr)) != NULL) {
 			results = strncat(results, ent->d_name, strlen(ent->d_name));
 			results = strncat(results, "\n", 1);
@@ -97,6 +98,7 @@ int main(int argc, char **argv) {
 		             (struct sockaddr *) &clientaddr, &clientlen);
 		if (n < 0)
 			error("ERROR in recvfrom");
+
 		/*
 		 * gethostbyaddr: determine who sent the datagram
 		 */
