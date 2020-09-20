@@ -138,7 +138,7 @@ int main(int argc, char **argv) {
 			if (remove(parameter) == 0) {
 				sprintf(buf, "File \"%s\" deleted successfully!", parameter);
 			} else {
-				sprintf(buf, "File \"%s\" could not be deleted.", parameter);
+				sprintf(buf, "File \"%s\" could not be deleted, error \"%s\".", parameter, strerror(errno));
 			}
 			/*
 			 * sendto: echo the input back to the client
