@@ -25,7 +25,6 @@ void error(char *msg) {
 void ls(char results[]) {
 	DIR *dirptr;
 	struct dirent *ent;
-	int numBytes = 0;
 	bzero(results, BUFSIZE);
 	dirptr = opendir("./");
 
@@ -46,7 +45,7 @@ int main(int argc, char **argv) {
 	struct sockaddr_in clientaddr; /* client addr */
 	struct hostent *hostp; /* client host info */
 	char buf[BUFSIZE]; /* message buf */
-	char *hostaddrp, *command, *parameter, *end; /* dotted decimal host addr string */
+	char *hostaddrp, *command, *parameter; /* dotted decimal host addr string */
 	int optval; /* flag value for setsockopt */
 	int n, keepRunning = 1; /* message byte size */
 
