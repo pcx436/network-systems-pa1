@@ -19,7 +19,7 @@ void trimSpace(char *str){
 	str[end+1] = '\0';
 }
 
-void receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *parameter) {
+int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *parameter) {
 	FILE *fileObj = fopen(parameter, "wb");
 	char recv[BUFSIZE];
 	bzero(recv, BUFSIZE);
@@ -42,7 +42,7 @@ void receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, con
 	fclose(fileObj);
 }
 
-void sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const char *parameter) {
+int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const char *parameter) {
 	int bytesSent, n;
 	char send[BUFSIZE];
 	FILE *fileObj = fopen(parameter, "rb");
