@@ -181,7 +181,8 @@ int main(int argc, char **argv) {
 			}
 		} else if (strcmp("ls", command) == 0) {
 			// If there was an error, the errno explanation will be in response
-			ls(response);
+			ls(sockfd, &clientaddr, clientlen);
+			sprintf(response, "ls command completed.");
 		} else if (strcmp("exit", command) == 0) {
 			sprintf(response, "Shutting down...\n");
 			keepRunning = 0;
