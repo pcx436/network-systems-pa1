@@ -28,7 +28,6 @@ void getFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const c
 	do {
 		n = recvfrom(sockfd, recv, BUFSIZE, 0, (struct sockaddr *) serveraddr, serverlen);
 		if (n >= 0) {
-			printf("received \"%s\" (%d) from server\n", recv, n);
 			fwrite(recv, sizeof(char), n, fileObj);
 			bzero(recv, BUFSIZE);
 
@@ -56,9 +55,6 @@ void sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const c
 		if (bytesSent < 0) {
 			printf("ERROR: %s\n", strerror(errno));
 			n = 123123;
-		}
-		else {
-			printf("sent \"%s\" (%d) from server\n", send, bytesSent);
 		}
 
 	} while (n == BUFSIZE);
