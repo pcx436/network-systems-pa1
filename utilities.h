@@ -9,7 +9,7 @@
 
 void trimSpace(char *);
 void error(char *);
-int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *parameter);
+int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *filename);
 int sendFile(int, struct sockaddr_in *, int, const char *);
 
 #endif //NETWORK_SYSTEMS_PA1_UTILITIES_H
