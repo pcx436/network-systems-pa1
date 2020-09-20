@@ -22,12 +22,15 @@ void trimSpace(char *str){
 	str[end+1] = '\0';
 }
 
+/*
+ * Receives a file over multiple calls to recvfrom and saves it to the provided filename.
+ * Returns the number of bytes received upon success or -1 upon error.
+ */
 int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *filename) {
 	char recv[BUFSIZE];
 	int bytesReceived, totalReceived = 0;
 	FILE *fileObj = fopen(filename, "wb");
 
-	// exchange file size
 	do {
 		bzero(recv, BUFSIZE);
 		bytesReceived = recvfrom(sockfd, recv, BUFSIZE, 0, (struct sockaddr *) serveraddr, serverlen);
@@ -40,12 +43,16 @@ int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, cons
 			bytesReceived = BUFSIZE - 1;  // break the loop
 			totalReceived = -1;
 		}
-	} while (bytesReceived == BUFSIZE);
+	} while (bytesReceived == BUFSIZE);  // loop as long as the buffer is full when sent.
 
 	fclose(fileObj);
 	return totalReceived;
 }
 
+/*
+ * Reads in a file specified by the filename parameter and sends it to the specified socket address.
+ * Returns the number of bytes sent upon success or -1 upon error.
+ */
 int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const char *filename) {
 	int bytesSent, bytesRead, totalSent = 0;
 	char send[BUFSIZE];
@@ -55,7 +62,7 @@ int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const ch
 	do {
 		bzero(send, BUFSIZE);
 
-		bytesRead = fread(send, sizeof(char), BUFSIZE, fileObj);
+		bytesRead = fread(send, sizeof(char), BUFSIZE, fileObj);  // read BUFSIZE bytes from file
 		bytesSent = sendto(sockfd, send, bytesRead, 0, (const struct sockaddr *) clientaddr, clientlen);
 		if (bytesSent < 0) {
 			printf("ERROR: %s\n", strerror(errno));
