@@ -8,7 +8,7 @@
 #include <netinet/in.h>
 
 void trimSpace(char *);
-void getFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *parameter);
+void getFile(int, struct sockaddr_in *, int *, const char *);
 void sendFile(int, struct sockaddr_in *, int, const char *);
 
 #endif //NETWORK_SYSTEMS_PA1_UTILITIES_H
