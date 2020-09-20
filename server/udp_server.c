@@ -16,24 +16,47 @@
 #include "../utilities.h"
 #include <errno.h>
 
-void ls(char results[]) {
+void ls(int sockfd, struct sockaddr_in *clientaddr, int clientlen) {
 	DIR *dirptr;
 	struct dirent *ent;
-	bzero(results, BUFSIZE);
+	int bytesSent = 0;
+	char fileName[BUFSIZE];
+
 	dirptr = opendir("./");
 
+	// exchange file size
 	if (dirptr != NULL) {
-		// while there are files in the directory, put them in results buffer
-		while ((ent = readdir(dirptr)) != NULL) {
-			results = strncat(results, ent->d_name, strlen(ent->d_name));
-			results = strncat(results, "\n", 1);
+		// while there are files in the directory, send them to the client
+		while (bytesSent >= 0 && (ent = readdir(dirptr)) != NULL) {
+			bzero(fileName, BUFSIZE);
+			strcpy(fileName, ent->d_name);
+
+			bytesSent = sendto(sockfd, fileName, BUFSIZE, 0,
+					  (const struct sockaddr *) clientaddr, clientlen);
+
+			if (bytesSent < 0) {
+				printf("ERROR: %s\n", strerror(errno));
+			}
 		}
 	} else {
 		// communicate the failure to the client
-		strcpy(results, strerror(errno));
-	}
+		strcpy(fileName, strerror(errno));
 
+		// communicate error before blank send
+		bytesSent = sendto(sockfd, fileName, BUFSIZE, 0,
+					 (const struct sockaddr *) clientaddr, clientlen);
+
+		if (bytesSent < 0) {
+			printf("ERROR: %s\n", strerror(errno));
+		}
+	}
 	closedir(dirptr);
+
+	bzero(fileName, BUFSIZE);  // send over an empty buffer to signal finished
+	bytesSent = sendto(sockfd, fileName, BUFSIZE, 0, (const struct sockaddr *) clientaddr, clientlen);
+	if (bytesSent < 0) {
+		printf("ERROR: %s\n", strerror(errno));
+	}
 }
 
 int main(int argc, char **argv) {
