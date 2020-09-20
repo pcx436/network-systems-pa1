@@ -5,6 +5,7 @@
 #ifndef NETWORK_SYSTEMS_PA1_UTILITIES_H
 #define NETWORK_SYSTEMS_PA1_UTILITIES_H
 #define BUFSIZE 1024
+#include <netinet/in.h>
 
 void trimSpace(char *);
 void getFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *parameter);
