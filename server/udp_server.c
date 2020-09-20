@@ -23,6 +23,23 @@ void error(char *msg) {
   exit(1);
 }
 
+
+void ls(char results[]) {
+	DIR *dirptr;
+	struct dirent *ent;
+	int numBytes = 0;
+	bzero(results, BUFSIZE);
+	dirptr = opendir("./");
+
+	if (dirptr != NULL)
+		while ((ent = readdir(dirptr)) != NULL) {
+			results = strncat(results, ent->d_name, strlen(ent->d_name));
+			results = strncat(results, "\n", 1);
+		}
+
+	closedir(dirptr);
+}
+
 int main(int argc, char **argv) {
   int sockfd; /* socket */
   int portno; /* port to listen on */
