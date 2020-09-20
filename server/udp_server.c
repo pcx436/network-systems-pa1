@@ -144,7 +144,7 @@ int main(int argc, char **argv) {
 			getFile(sockfd, &clientaddr, &clientlen, parameter);
 		} else if (strcmp("delete", command) == 0 && parameter != NULL) {
 			printf("Received command to DELETE file \"%s\"\n", parameter);
-			bzero(buf, BUFSIZE);
+
 			if (remove(parameter) == 0) {
 				sprintf(buf, "File \"%s\" deleted successfully!", parameter);
 			} else {
