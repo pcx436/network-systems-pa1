@@ -13,7 +13,6 @@
 #include <arpa/inet.h>
 #include <dirent.h>
 #include "../utilities.h"
-#include <errno.h>
 
 #define BUFSIZE 1024
 
