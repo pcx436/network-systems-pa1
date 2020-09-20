@@ -125,6 +125,8 @@ int main(int argc, char **argv) {
 		 * exit
 		 * unknown: repeat back to client
 		 */
+		memcpy(bufBackup, buf, BUFSIZE);  // backup the buffer before it gets mangled by strtok
+
 		trimSpace(buf);
 		command = strtok(buf, " ");
 		parameter = strtok(NULL, " ");
@@ -153,6 +155,8 @@ int main(int argc, char **argv) {
 		} else if (strcmp("exit", command) == 0) {
 			sprintf(response, "Shutting down...\n");
 			keepRunning = 0;
+		} else {
+			strcpy(response, bufBackup);  // restore original value of buffer to be sent back to client
 		}
 
 		if (strlen(response) > 0) {
