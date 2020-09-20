@@ -11,3 +11,8 @@ server: server/udp_server.o utils
 
 utils: utilities.o
 	$(CC) -c -o utilities.o utilities.c
+
+clean:
+	rm utilities.o
+	rm client/udp_client.o
+	rm server/udp_server.o
