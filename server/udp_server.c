@@ -159,7 +159,7 @@ int main(int argc, char **argv) {
 			           (const struct sockaddr *) &clientaddr, clientlen);
 			if (n < 0)
 				error("ERROR in sendto");
-		} else if (strcmp("ls\n", command) == 0) {
+		} else if (strcmp("ls", command) == 0) {
 			printf("ls command received\n");
 			ls(buf);
 
@@ -171,11 +171,10 @@ int main(int argc, char **argv) {
 			           (const struct sockaddr *) &clientaddr, clientlen);
 			if (n < 0)
 				error("ERROR in sendto");
-		} else if (strcmp("exit\n", command) == 0) {
+		} else if (strcmp("exit", command) == 0) {
 			printf("Shutting down...\n");
 			keepRunning = 0;
 
-			printf("Sending back \"%s\"\n", buf);
 			/*
 			 * sendto: echo the input back to the client
 			 */
