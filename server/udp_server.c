@@ -21,8 +21,8 @@
  * error - wrapper for perror
  */
 void error(char *msg) {
-  perror(msg);
-  exit(1);
+	perror(msg);
+	exit(1);
 }
 
 
