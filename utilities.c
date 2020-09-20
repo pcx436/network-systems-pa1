@@ -26,17 +26,15 @@ int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, cons
 	char recv[BUFSIZE];
 	int bytesReceived, totalReceived = 0;
 	FILE *fileObj = fopen(filename, "wb");
-	bzero(recv, BUFSIZE);
 
 	// exchange file size
 	do {
+		bzero(recv, BUFSIZE);
 		bytesReceived = recvfrom(sockfd, recv, BUFSIZE, 0, (struct sockaddr *) serveraddr, serverlen);
 
 		if (bytesReceived >= 0) {
 			totalReceived += bytesReceived;
 			fwrite(recv, sizeof(char), bytesReceived, fileObj);
-			bzero(recv, BUFSIZE);
-
 		} else {
 			printf("ERROR: %s\n", strerror(errno));
 			bytesReceived = BUFSIZE - 1;  // break the loop
