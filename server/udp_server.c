@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
 	struct sockaddr_in serveraddr; /* server's addr */
 	struct sockaddr_in clientaddr; /* client addr */
 	struct hostent *hostp; /* client host info */
-	char buf[BUFSIZE]; /* message buf */
+	char buf[BUFSIZE], response[BUFSIZE], bufBackup[BUFSIZE]; /* message buf */
 	char *hostaddrp, *command, *parameter; /* dotted decimal host addr string */
 	int optval; /* flag value for setsockopt */
 	int n, keepRunning = 1; /* message byte size */
@@ -128,37 +128,38 @@ int main(int argc, char **argv) {
 		trimSpace(buf);
 		command = strtok(buf, " ");
 		parameter = strtok(NULL, " ");
+		bzero(response, BUFSIZE);
 
 		if (strcmp("get", command) == 0 && parameter != NULL) {
 			if (sendFile(sockfd, &clientaddr, clientlen, parameter) >= 0 ) {
-				sprintf(buf, "File \"%s\" transferred successfully!", parameter);
+				sprintf(response, "File \"%s\" transferred successfully!", parameter);
 			} else {
-				sprintf(buf, "File \"%s\" failed to transfer, %s", parameter, strerror(errno));
+				sprintf(response, "File \"%s\" failed to transfer, %s", parameter, strerror(errno));
 			}
 		} else if (strcmp("put", command) == 0 && parameter != NULL) {
 			if (receiveFile(sockfd, &clientaddr, &clientlen, parameter) >= 0) {
-				sprintf(buf, "File \"%s\" received successfully!", parameter);
+				sprintf(response, "File \"%s\" received successfully!", parameter);
 			} else {
-				sprintf(buf, "File \"%s\" could not be received, %s", parameter, strerror(errno));
+				sprintf(response, "File \"%s\" could not be received, %s", parameter, strerror(errno));
 			}
 		} else if (strcmp("delete", command) == 0 && parameter != NULL) {
 			if (remove(parameter) == 0) {
-				sprintf(buf, "File \"%s\" deleted successfully!", parameter);
+				sprintf(response, "File \"%s\" deleted successfully!", parameter);
 			} else {
-				sprintf(buf, "File \"%s\" could not be deleted, error \"%s\".", parameter, strerror(errno));
+				sprintf(response, "File \"%s\" could not be deleted, error \"%s\".", parameter, strerror(errno));
 			}
 		} else if (strcmp("ls", command) == 0) {
-			ls(buf);
+			ls(response);
 		} else if (strcmp("exit", command) == 0) {
-			sprintf(buf, "Shutting down...\n");
+			sprintf(response, "Shutting down...\n");
 			keepRunning = 0;
 		}
 
-		if (strlen(buf) > 0) {
+		if (strlen(response) > 0) {
 			/*
 			 * sendto: echo the input back to the client
 			 */
-			n = sendto(sockfd, buf, strlen(buf), 0,
+			n = sendto(sockfd, response, strlen(response), 0,
 			           (const struct sockaddr *) &clientaddr, clientlen);
 			if (n < 0)
 				error("ERROR in sendto");
