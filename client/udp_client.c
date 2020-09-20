@@ -3,6 +3,7 @@
  * usage: udpclient <host> <port>
  */
 #include <stdio.h>
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
 #include <strings.h>
@@ -11,6 +12,26 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include "../utilities.h"
+
+void ls(int sockfd, struct sockaddr_in *serveraddr, int *serverlen) {
+	char recv[BUFSIZE];
+	int bytesReceived;
+
+	// exchange file size
+	do {
+		bzero(recv, BUFSIZE);
+		bytesReceived = recvfrom(sockfd, recv, BUFSIZE, 0, (struct sockaddr *) serveraddr, serverlen);
+
+		if (strlen(recv) > 0) {
+			printf("%s\n", recv);
+		} else if (strlen(recv) == 0) {  // received final, empty string
+			bytesReceived = BUFSIZE - 1;
+		} else {
+			printf("ERROR: %s\n", strerror(errno));
+			bytesReceived = BUFSIZE - 1;  // break the loop
+		}
+	} while (bytesReceived == BUFSIZE);
+}
 
 int main(int argc, char **argv) {
     int sockfd, portno, n;
