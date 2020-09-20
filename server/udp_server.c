@@ -132,7 +132,11 @@ int main(int argc, char **argv) {
 		parameter = strtok(NULL, " ");
 
 		if (strcmp("get", command) == 0 && parameter != NULL) {
-			sendFile(sockfd, &clientaddr, clientlen, parameter);
+			if (sendFile(sockfd, &clientaddr, clientlen, parameter) >= 0 ) {
+				sprintf(buf, "File \"%s\" transferred successfully!", parameter);
+			} else {
+				sprintf(buf, "File \"%s\" failed to transfer, %s", parameter, strerror(errno));
+			}
 		} else if (strcmp("put", command) == 0 && parameter != NULL) {
 			receiveFile(sockfd, &clientaddr, &clientlen, parameter);
 		} else if (strcmp("delete", command) == 0 && parameter != NULL) {
