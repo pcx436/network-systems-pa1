@@ -54,9 +54,13 @@ int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, cons
 	return totalReceived;
 }
 
-/*
+/**
  * Reads in a file specified by the filename parameter and sends it to the specified socket address.
- * Returns the number of bytes sent upon success or -1 upon error.
+ * @param 	sockfd 		The socket file descriptor.
+ * @param 	clientaddr 	The client's address information.
+ * @param 	clientlen 	The length of the client's address information.
+ * @param 	filename 	The name of the file to send to the client.
+ * @return 				The number of bytes sent upon success or -1 upon error.
  */
 int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const char *filename) {
 	int bytesSent, bytesRead, totalSent = 0;
