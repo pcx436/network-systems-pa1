@@ -22,7 +22,6 @@ void error(char *msg) {
     exit(0);
 }
 
-
 int main(int argc, char **argv) {
     int sockfd, portno, n;
     int serverlen, getDone;
@@ -79,8 +78,7 @@ int main(int argc, char **argv) {
 		getFile(sockfd, &serveraddr, &serverlen, parameter);
 	} else if (strcmp("put", command) == 0 && parameter != NULL) {
 		sendFile(sockfd, &serveraddr, serverlen,  parameter);
-	}
-	else {
+	} else {
 		/* print the server's reply */
 		n = recvfrom(sockfd, recv, BUFSIZE, 0, (struct sockaddr *) &serveraddr, &serverlen);
 		if (n < 0)
