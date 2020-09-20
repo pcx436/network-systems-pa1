@@ -131,14 +131,10 @@ int main(int argc, char **argv) {
 		parameter = strtok(NULL, " ");
 
 		if (strcmp("get", command) == 0 && parameter != NULL) {
-			printf("Received command to GET file \"%s\"\n", parameter);
 			sendFile(sockfd, &clientaddr, clientlen, parameter);
 		} else if (strcmp("put", command) == 0 && parameter != NULL) {
-			printf("Received command to PUT file \"%s\"\n", parameter);
 			receiveFile(sockfd, &clientaddr, &clientlen, parameter);
 		} else if (strcmp("delete", command) == 0 && parameter != NULL) {
-			printf("Received command to DELETE file \"%s\"\n", parameter);
-
 			if (remove(parameter) == 0) {
 				sprintf(buf, "File \"%s\" deleted successfully!", parameter);
 			} else {
