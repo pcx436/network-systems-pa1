@@ -13,6 +13,7 @@
 #include <arpa/inet.h>
 #include <dirent.h>
 #include "../utilities.h"
+#include <errno.h>
 
 /*
  * error - wrapper for perror
