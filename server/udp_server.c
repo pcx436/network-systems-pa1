@@ -149,38 +149,22 @@ int main(int argc, char **argv) {
 			} else {
 				sprintf(buf, "File \"%s\" could not be deleted, error \"%s\".", parameter, strerror(errno));
 			}
-			/*
-			 * sendto: echo the input back to the client
-			 */
-			n = sendto(sockfd, buf, strlen(buf), 0,
-			           (const struct sockaddr *) &clientaddr, clientlen);
-			if (n < 0)
-				error("ERROR in sendto");
 		} else if (strcmp("ls", command) == 0) {
 			ls(buf);
-
-			/*
-			 * sendto: echo the input back to the client
-			 */
-			n = sendto(sockfd, buf, strlen(buf), 0,
-			           (const struct sockaddr *) &clientaddr, clientlen);
-			if (n < 0)
-				error("ERROR in sendto");
 		} else if (strcmp("exit", command) == 0) {
-			printf("Shutting down...\n");
+			sprintf(buf, "Shutting down...\n");
 			keepRunning = 0;
-
-			/*
-			 * sendto: echo the input back to the client
-			 */
-			n = sendto(sockfd, buf, strlen(buf), 0,
-			           (const struct sockaddr *) &clientaddr, clientlen);
-			if (n < 0)
-				error("ERROR in sendto");
-		} else {
-			printf("wtf\n");
 		}
 
+		if (strlen(buf) > 0) {
+			/*
+			 * sendto: echo the input back to the client
+			 */
+			n = sendto(sockfd, buf, strlen(buf), 0,
+			           (const struct sockaddr *) &clientaddr, clientlen);
+			if (n < 0)
+				error("ERROR in sendto");
+		}
 	}
 	close(sockfd);
 }
