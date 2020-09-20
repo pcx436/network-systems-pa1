@@ -45,7 +45,7 @@ int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, cons
 }
 
 int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const char *parameter) {
-	int bytesSent, n;
+	int bytesSent, bytesRead, totalSent = 0;
 	char send[BUFSIZE];
 	FILE *fileObj = fopen(parameter, "rb");
 
@@ -53,14 +53,14 @@ int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const ch
 	do {
 		bzero(send, BUFSIZE);
 
-		n = fread(send, sizeof(char), BUFSIZE, fileObj);
-		bytesSent = sendto(sockfd, send, n, 0, (const struct sockaddr *) clientaddr, clientlen);
+		bytesRead = fread(send, sizeof(char), BUFSIZE, fileObj);
+		bytesSent = sendto(sockfd, send, bytesRead, 0, (const struct sockaddr *) clientaddr, clientlen);
 		if (bytesSent < 0) {
 			printf("ERROR: %s\n", strerror(errno));
-			n = 123123;
+			bytesRead = BUFSIZE - 1;
 		}
 
-	} while (n == BUFSIZE);
+	} while (bytesRead == BUFSIZE);
 	printf("Finished loop\n");
 
 	fclose(fileObj);
