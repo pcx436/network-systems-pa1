@@ -13,8 +13,9 @@
 #include <stdlib.h>
 #include "utilities.h"
 
-/*
+/**
  * Removes trailing spaces from a string.
+ * @param str The string to trim space from.
  */
 void trimSpace(char *str){
 	int end = strlen(str) - 1;
