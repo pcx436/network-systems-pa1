@@ -58,7 +58,8 @@ void ls(int sockfd, struct sockaddr_in *clientaddr, int clientlen) {
 	}
 	closedir(dirptr);
 
-	bzero(fileName, BUFSIZE);  // send over an empty buffer to signal finished
+	// send over an empty buffer to signal finished
+	bzero(fileName, BUFSIZE);
 	bytesSent = sendto(sockfd, fileName, BUFSIZE, 0, (const struct sockaddr *) clientaddr, clientlen);
 	if (bytesSent < 0) {
 		printf("ERROR: %s\n", strerror(errno));
