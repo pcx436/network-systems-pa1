@@ -22,26 +22,29 @@ void trimSpace(char *str){
 }
 
 int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *parameter) {
-	FILE *fileObj = fopen(parameter, "wb");
 	char recv[BUFSIZE];
+	int bytesReceived, totalReceived = 0;
+	FILE *fileObj = fopen(parameter, "wb");
 	bzero(recv, BUFSIZE);
-	int n;
 
 	// exchange file size
 	do {
-		n = recvfrom(sockfd, recv, BUFSIZE, 0, (struct sockaddr *) serveraddr, serverlen);
-		if (n >= 0) {
-			fwrite(recv, sizeof(char), n, fileObj);
+		bytesReceived = recvfrom(sockfd, recv, BUFSIZE, 0, (struct sockaddr *) serveraddr, serverlen);
+
+		if (bytesReceived >= 0) {
+			totalReceived += bytesReceived;
+			fwrite(recv, sizeof(char), bytesReceived, fileObj);
 			bzero(recv, BUFSIZE);
 
 		} else {
 			printf("ERROR: %s\n", strerror(errno));
-			n = BUFSIZE - 1;  // break the loop
+			bytesReceived = BUFSIZE - 1;  // break the loop
+			totalReceived = -1;
 		}
-	} while (n == BUFSIZE);
-	printf("Finished loop\n");
+	} while (bytesReceived == BUFSIZE);
 
 	fclose(fileObj);
+	return totalReceived;
 }
 
 int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const char *parameter) {
