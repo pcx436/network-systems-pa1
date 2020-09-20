@@ -4,7 +4,7 @@ CFLAGS=-I. -std=c11
 default: client server
 
 client: client/udp_client.o utils
-	$(CC) -o server/udpclient client/udp_client.o utilities.o
+	$(CC) -o client/udpclient client/udp_client.o utilities.o
 
 server: server/udp_server.o utils
 	$(CC) -o server/udpserver server/udp_server.o utilities.o
