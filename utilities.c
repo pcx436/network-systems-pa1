@@ -12,7 +12,9 @@
 #include <netinet/in.h>
 #include "utilities.h"
 
-
+/*
+ * Removes trailing spaces from a string.
+ */
 void trimSpace(char *str){
 	int end = strlen(str) - 1;
 	while(isspace(str[end])) end--;
