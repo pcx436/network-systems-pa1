@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
 	command = strtok(buf, " ");
 	parameter = strtok(NULL, " ");
 	if (strcmp("get", command) == 0 && parameter != NULL) {
-		getFile(sockfd, &serveraddr, &serverlen, parameter);
+		receiveFile(sockfd, &serveraddr, &serverlen, parameter);
 	} else if (strcmp("put", command) == 0 && parameter != NULL) {
 		sendFile(sockfd, &serveraddr, serverlen,  parameter);
 	} else {

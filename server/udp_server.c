@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
 
 		} else if (strcmp("put", command) == 0 && parameter != NULL) {
 			printf("Received command to PUT file \"%s\"\n", parameter);
-			getFile(sockfd, &clientaddr, &clientlen, parameter);
+			receiveFile(sockfd, &clientaddr, &clientlen, parameter);
 		} else if (strcmp("delete", command) == 0 && parameter != NULL) {
 			printf("Received command to DELETE file \"%s\"\n", parameter);
 

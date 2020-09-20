@@ -18,7 +18,7 @@ void trimSpace(char *str){
 	str[end+1] = '\0';
 }
 
-void getFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *parameter) {
+void receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *parameter) {
 	FILE *fileObj = fopen(parameter, "wb");
 	char recv[BUFSIZE];
 	bzero(recv, BUFSIZE);
