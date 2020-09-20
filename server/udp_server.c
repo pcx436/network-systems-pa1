@@ -92,7 +92,7 @@ int main(int argc, char **argv) {
 	 * main loop: wait for a datagram, then echo it
 	 */
 	clientlen = sizeof(clientaddr);
-	while (keepRunning == 1) {
+	while (keepRunning == 1) {  // will turn to 0 upon exit command
 
 		/*
 		 * recvfrom: receive a UDP datagram from a client
@@ -127,30 +127,37 @@ int main(int argc, char **argv) {
 		 */
 		memcpy(bufBackup, buf, BUFSIZE);  // backup the buffer before it gets mangled by strtok
 
+		// remove \n that may be on buffer
 		trimSpace(buf);
+
+		// separate the buffer such that we can tell the difference between the command and parameter (should one exist)
 		command = strtok(buf, " ");
 		parameter = strtok(NULL, " ");
 		bzero(response, BUFSIZE);
 
 		if (strcmp("get", command) == 0 && parameter != NULL) {
+			// Communicate success or failure to client depending on return value
 			if (sendFile(sockfd, &clientaddr, clientlen, parameter) >= 0 ) {
 				sprintf(response, "File \"%s\" transferred successfully!", parameter);
 			} else {
 				sprintf(response, "File \"%s\" failed to transfer, %s", parameter, strerror(errno));
 			}
 		} else if (strcmp("put", command) == 0 && parameter != NULL) {
+			// Communicate success or failure to client depending on return value
 			if (receiveFile(sockfd, &clientaddr, &clientlen, parameter) >= 0) {
 				sprintf(response, "File \"%s\" received successfully!", parameter);
 			} else {
 				sprintf(response, "File \"%s\" could not be received, %s", parameter, strerror(errno));
 			}
 		} else if (strcmp("delete", command) == 0 && parameter != NULL) {
+			// Communicate success or failure to client depending on return value
 			if (remove(parameter) == 0) {
 				sprintf(response, "File \"%s\" deleted successfully!", parameter);
 			} else {
 				sprintf(response, "File \"%s\" could not be deleted, error \"%s\".", parameter, strerror(errno));
 			}
 		} else if (strcmp("ls", command) == 0) {
+			// If there was an error, the errno explanation will be in response
 			ls(response);
 		} else if (strcmp("exit", command) == 0) {
 			sprintf(response, "Shutting down...\n");
@@ -159,6 +166,7 @@ int main(int argc, char **argv) {
 			strcpy(response, bufBackup);  // restore original value of buffer to be sent back to client
 		}
 
+		// If there is a response to send (always should be), send it to the client.
 		if (strlen(response) > 0) {
 			/*
 			 * sendto: echo the input back to the client
