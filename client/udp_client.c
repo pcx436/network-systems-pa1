@@ -30,7 +30,6 @@ int main(int argc, char **argv) {
     struct hostent *server;
     char *hostname;
     char buf[BUFSIZE], recv[BUFSIZE], *command, *parameter;
-	// n = recvfrom(sockfd, recv, BUFSIZE, 0, (struct sockaddr *) &serveraddr, &serverlen);
 
     /* check command line arguments */
     if (argc != 3) {
