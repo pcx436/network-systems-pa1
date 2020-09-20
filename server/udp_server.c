@@ -184,7 +184,7 @@ int main(int argc, char **argv) {
 			ls(sockfd, &clientaddr, clientlen);
 			sprintf(response, "ls command completed.");
 		} else if (strcmp("exit", command) == 0) {
-			sprintf(response, "Shutting down...\n");
+			sprintf(response, "Shutting down...");
 			keepRunning = 0;
 		} else {
 			strcpy(response, bufBackup);  // restore original value of buffer to be sent back to client
