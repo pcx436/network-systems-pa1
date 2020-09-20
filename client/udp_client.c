@@ -93,6 +93,8 @@ int main(int argc, char **argv) {
 	} else if (strcmp("put", command) == 0 && parameter != NULL) {
 		// put file
 		sendFile(sockfd, &serveraddr, serverlen,  parameter);
+	} else if (strcmp("ls", command) == 0) {
+		ls(sockfd, &serveraddr, &serverlen);
 	}
 
 	/* print the server's reply */
