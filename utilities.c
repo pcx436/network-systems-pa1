@@ -64,7 +64,6 @@ int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const ch
 		}
 
 	} while (bytesRead == BUFSIZE);
-	printf("Finished loop\n");
 
 	fclose(fileObj);
 }
