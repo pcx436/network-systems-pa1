@@ -68,13 +68,13 @@ int main(int argc, char **argv) {
 		receiveFile(sockfd, &serveraddr, &serverlen, parameter);
 	} else if (strcmp("put", command) == 0 && parameter != NULL) {
 		sendFile(sockfd, &serveraddr, serverlen,  parameter);
-	} else {
-		/* print the server's reply */
-		n = recvfrom(sockfd, recv, BUFSIZE, 0, (struct sockaddr *) &serveraddr, &serverlen);
-		if (n < 0)
-			error("ERROR in recvfrom");
-		printf("Echo from server: %s\n", recv);
 	}
+
+	/* print the server's reply */
+	n = recvfrom(sockfd, recv, BUFSIZE, 0, (struct sockaddr *) &serveraddr, &serverlen);
+	if (n < 0)
+		error("ERROR in recvfrom");
+	printf("Echo from server: %s\n", recv);
 
     return 0;
 }
