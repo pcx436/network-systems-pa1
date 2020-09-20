@@ -22,7 +22,6 @@ void error(char *msg) {
 	exit(1);
 }
 
-
 void ls(char results[]) {
 	DIR *dirptr;
 	struct dirent *ent;
@@ -127,7 +126,6 @@ int main(int argc, char **argv) {
 		 * exit
 		 * unknown: repeat back to client
 		 */
-
 		trimSpace(buf);
 		command = strtok(buf, " ");
 		parameter = strtok(NULL, " ");
@@ -135,7 +133,6 @@ int main(int argc, char **argv) {
 		if (strcmp("get", command) == 0 && parameter != NULL) {
 			printf("Received command to GET file \"%s\"\n", parameter);
 			sendFile(sockfd, &clientaddr, clientlen, parameter);
-
 		} else if (strcmp("put", command) == 0 && parameter != NULL) {
 			printf("Received command to PUT file \"%s\"\n", parameter);
 			receiveFile(sockfd, &clientaddr, &clientlen, parameter);
