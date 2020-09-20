@@ -28,6 +28,10 @@ void ls(char results[]) {
 			results = strncat(results, ent->d_name, strlen(ent->d_name));
 			results = strncat(results, "\n", 1);
 		}
+	} else {
+		// communicate the failure to the client
+		strcpy(results, strerror(errno));
+	}
 
 	closedir(dirptr);
 }
