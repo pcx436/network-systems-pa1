@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
     printf("Please enter msg: ");
     fgets(buf, BUFSIZE, stdin);
 
-	trimSpace(buf);
+	trimSpace(buf);  // remove \n that may be on the buffer
 
 	/* send the message to the server */
     serverlen = sizeof(serveraddr);
@@ -62,11 +62,15 @@ int main(int argc, char **argv) {
     if (n < 0) 
       error("ERROR in sendto");
 
+    // split the buffer into command and parameter to decide on action
 	command = strtok(buf, " ");
 	parameter = strtok(NULL, " ");
+
+	// get file
 	if (strcmp("get", command) == 0 && parameter != NULL) {
 		receiveFile(sockfd, &serveraddr, &serverlen, parameter);
 	} else if (strcmp("put", command) == 0 && parameter != NULL) {
+		// put file
 		sendFile(sockfd, &serveraddr, serverlen,  parameter);
 	}
 
