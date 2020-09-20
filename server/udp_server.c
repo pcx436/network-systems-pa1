@@ -16,6 +16,12 @@
 #include "../utilities.h"
 #include <errno.h>
 
+/**
+ * Sends the name of each file in the current directory to the specified address. Each file name is sent individually.
+ * @param 	sockfd		The socket file descriptor
+ * @param 	clientaddr 	The client address information
+ * @param 	clientlen 	The length of the client address
+ */
 void ls(int sockfd, struct sockaddr_in *clientaddr, int clientlen) {
 	DIR *dirptr;
 	struct dirent *ent;
