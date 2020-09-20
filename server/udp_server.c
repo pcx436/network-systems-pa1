@@ -16,14 +16,6 @@
 #include "../utilities.h"
 #include <errno.h>
 
-/*
- * error - wrapper for perror
- */
-void error(char *msg) {
-	perror(msg);
-	exit(1);
-}
-
 void ls(char results[]) {
 	DIR *dirptr;
 	struct dirent *ent;
