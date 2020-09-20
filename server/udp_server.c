@@ -157,7 +157,6 @@ int main(int argc, char **argv) {
 			if (n < 0)
 				error("ERROR in sendto");
 		} else if (strcmp("ls", command) == 0) {
-			printf("ls command received\n");
 			ls(buf);
 
 			printf("Sending back \"%s\"\n", buf);
