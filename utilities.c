@@ -87,8 +87,9 @@ int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const ch
 	return totalSent;
 }
 
-/*
+/**
  * error - wrapper for perror
+ * @param msg The error message to exit with.
  */
 void error(char *msg) {
 	perror(msg);
