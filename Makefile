@@ -3,10 +3,10 @@ CFLAGS=-I. -std=c11
 
 default: client server
 
-client: client/udp_client.o utils
+client: utils client/udp_client.o
 	$(CC) -o client/udpclient client/udp_client.o utilities.o
 
-server: server/udp_server.o utils
+server: utils server/udp_server.o
 	$(CC) -o server/udpserver server/udp_server.o utilities.o
 
 utils: utilities.o
