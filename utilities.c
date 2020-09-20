@@ -61,9 +61,13 @@ int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const ch
 		if (bytesSent < 0) {
 			printf("ERROR: %s\n", strerror(errno));
 			bytesRead = BUFSIZE - 1;
+			totalSent = -1;
+		} else {
+			totalSent += bytesSent;
 		}
 
 	} while (bytesRead == BUFSIZE);
 
 	fclose(fileObj);
+	return totalSent;
 }
