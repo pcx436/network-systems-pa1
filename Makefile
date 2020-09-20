@@ -1,6 +1,8 @@
 CC=gcc
 CFLAGS=-I.
 
+default: client server
+
 client: client/udp_client.o utils
 	$(CC) -o server/udpclient client/udp_client.o utilities.o
 
