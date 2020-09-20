@@ -159,7 +159,6 @@ int main(int argc, char **argv) {
 		} else if (strcmp("ls", command) == 0) {
 			ls(buf);
 
-			printf("Sending back \"%s\"\n", buf);
 			/*
 			 * sendto: echo the input back to the client
 			 */
