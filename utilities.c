@@ -22,10 +22,10 @@ void trimSpace(char *str){
 	str[end+1] = '\0';
 }
 
-int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *parameter) {
+int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *filename) {
 	char recv[BUFSIZE];
 	int bytesReceived, totalReceived = 0;
-	FILE *fileObj = fopen(parameter, "wb");
+	FILE *fileObj = fopen(filename, "wb");
 	bzero(recv, BUFSIZE);
 
 	// exchange file size
@@ -48,10 +48,10 @@ int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, cons
 	return totalReceived;
 }
 
-int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const char *parameter) {
+int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const char *filename) {
 	int bytesSent, bytesRead, totalSent = 0;
 	char send[BUFSIZE];
-	FILE *fileObj = fopen(parameter, "rb");
+	FILE *fileObj = fopen(filename, "rb");
 
 	// exchange file size
 	do {
