@@ -149,9 +149,7 @@ int main(int argc, char **argv) {
 				sprintf(buf, "File \"%s\" deleted successfully!", parameter);
 			} else {
 				sprintf(buf, "File \"%s\" could not be deleted.", parameter);
-				// error(buf);
 			}
-			printf("Sending back \"%s\"\n", buf);
 			/*
 			 * sendto: echo the input back to the client
 			 */
