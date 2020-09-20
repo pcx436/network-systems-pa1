@@ -6,14 +6,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <sys/types.h>
+#include <errno.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <netdb.h> 
+#include <netdb.h>
+#include "../utilities.h"
 
 #define BUFSIZE 1024
 
-/* 
+
+/*
  * error - wrapper for perror
  */
 void error(char *msg) {
@@ -21,13 +23,15 @@ void error(char *msg) {
     exit(0);
 }
 
+
 int main(int argc, char **argv) {
     int sockfd, portno, n;
-    int serverlen;
+    int serverlen, getDone;
     struct sockaddr_in serveraddr;
     struct hostent *server;
     char *hostname;
-    char buf[BUFSIZE];
+    char buf[BUFSIZE], recv[BUFSIZE], *command, *parameter;
+	// n = recvfrom(sockfd, recv, BUFSIZE, 0, (struct sockaddr *) &serveraddr, &serverlen);
 
     /* check command line arguments */
     if (argc != 3) {
@@ -38,6 +42,7 @@ int main(int argc, char **argv) {
     portno = atoi(argv[2]);
 
     /* socket: create the socket */
+	// IPv4 UDP connection
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd < 0) 
         error("ERROR opening socket");
@@ -58,19 +63,32 @@ int main(int argc, char **argv) {
 
     /* get a message from the user */
     bzero(buf, BUFSIZE);
+    bzero(recv, BUFSIZE);
     printf("Please enter msg: ");
     fgets(buf, BUFSIZE, stdin);
 
-    /* send the message to the server */
+	trimSpace(buf);
+
+	/* send the message to the server */
     serverlen = sizeof(serveraddr);
-    n = sendto(sockfd, buf, strlen(buf), 0, &serveraddr, serverlen);
+    n = sendto(sockfd, buf, strlen(buf), 0, (const struct sockaddr *) &serveraddr, serverlen);
     if (n < 0) 
       error("ERROR in sendto");
-    
-    /* print the server's reply */
-    n = recvfrom(sockfd, buf, strlen(buf), 0, &serveraddr, &serverlen);
-    if (n < 0) 
-      error("ERROR in recvfrom");
-    printf("Echo from server: %s", buf);
+
+	command = strtok(buf, " ");
+	parameter = strtok(NULL, " ");
+	if (strcmp("get", command) == 0 && parameter != NULL) {
+		getFile(sockfd, &serveraddr, &serverlen, parameter);
+	} else if (strcmp("put", command) == 0 && parameter != NULL) {
+		sendFile(sockfd, &serveraddr, serverlen,  parameter);
+	}
+	else {
+		/* print the server's reply */
+		n = recvfrom(sockfd, recv, BUFSIZE, 0, (struct sockaddr *) &serveraddr, &serverlen);
+		if (n < 0)
+			error("ERROR in recvfrom");
+		printf("Echo from server: %s\n", recv);
+	}
+
     return 0;
 }
