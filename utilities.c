@@ -22,9 +22,13 @@ void trimSpace(char *str){
 	str[end+1] = '\0';
 }
 
-/*
+/**
  * Receives a file over multiple calls to recvfrom and saves it to the provided filename.
- * Returns the number of bytes received upon success or -1 upon error.
+ * @param 	sockfd 		The socket file descriptor.
+ * @param 	serveraddr 	The server's address information.
+ * @param 	serverlen 	The lenght of the server address.
+ * @param 	filename 	The name of the file we want to receive.
+ * @return 	Returns the number of bytes received upon success or -1 upon error.
  */
 int receiveFile(int sockfd, struct sockaddr_in *serveraddr, int *serverlen, const char *filename) {
 	char recv[BUFSIZE];
