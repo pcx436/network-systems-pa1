@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <stdlib.h>
 #include "utilities.h"
 
 /*
@@ -70,4 +71,12 @@ int sendFile(int sockfd, struct sockaddr_in *clientaddr, int clientlen, const ch
 
 	fclose(fileObj);
 	return totalSent;
+}
+
+/*
+ * error - wrapper for perror
+ */
+void error(char *msg) {
+	perror(msg);
+	exit(0);
 }
